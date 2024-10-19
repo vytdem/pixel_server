@@ -1,0 +1,49 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  {% block title %}<title>Pixel</title>{% endblock %}#}
+{#  <meta charset="utf-8">#}
+{#  <meta name="viewport" content="width=device-width, initial-scale=1">#}
+{##}
+{#  {% load static %}#}
+{#  <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+{#  <script type="text/javascript" src="{% static 'js/websocket.js' %}"></script>#}
+{#  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>#}
+{#</head>#}
+{#<body>#}
+{#    <canvas id="canvas" width="300" height="300"></canvas>#}
+{#</body>#}
+{#</html>#}
+
+
+<!-- templates/home.html -->
+{% extends 'home.html' %}
+
+{% block title %}Home{% endblock %}
+    {% load static %}
+
+{% block assets %}
+    {% if user.is_authenticated %}
+        <meta name="user-token" content="{{ user_token }}">
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    {% if user.is_authenticated %}
+        <script type="text/javascript" src="{% static 'js/websocket.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        your token is: {{ user_token }}
+        <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+        <button id="pixel">Pixel</button>
+        <canvas id="canvas" width="350" height="350"></canvas>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+{% endblock %}
